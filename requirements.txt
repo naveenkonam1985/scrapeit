@@ -2,5 +2,5 @@
 pandas
 beautifulsoup4
 sqlalchemy
-psycopg2
+psycopg2-binary
 mysql-connector-python
