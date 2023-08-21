@@ -1,0 +1,6 @@
+# Requirements file
+pandas
+beautifulsoup4
+sqlalchemy
+psycopg2
+mysql-connector-python
