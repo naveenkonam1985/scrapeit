@@ -1,2 +1,2 @@
-# scrapeit
+# ScrapeIt
 Scraping tables with BeautifulSoup
