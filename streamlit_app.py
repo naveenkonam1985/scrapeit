@@ -1,6 +1,6 @@
 # Streamlit app file
 import streamlit as st
-import pandas
+import pandas as pd
 
 st.title("Table Crawler")
 st.header("ScrapeIt")
