@@ -1,6 +1,8 @@
 # Requirements file
-pandas
 beautifulsoup4
-sqlalchemy
+lxml
+pandas
 psycopg2-binary
+requests
+sqlalchemy
 mysql-connector-python
