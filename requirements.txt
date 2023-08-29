@@ -1,6 +1,7 @@
 # Requirements file
 beautifulsoup4
 lxml
+openpyxl
 pandas
 psycopg2-binary
 requests
