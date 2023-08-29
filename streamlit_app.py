@@ -24,6 +24,8 @@ with st.sidebar:
     except Exception:
         st.write("Please enter a url")
 
+    st.write("Note: This app searches for table tag in the html page, so it returns the table only if concern tags exists.")
+
 # Main Container
 with st.container():
    st.markdown("#### Scraped Tables from the URL")
@@ -31,17 +33,21 @@ with st.container():
        soup = BeautifulSoup(data, 'lxml')
        tables = soup.find_all('table')
 
-       for i,tab in enumerate(tables):
-           df_table = pd.read_html(str(tab))[0]
+       if tables:
+           for i,tab in enumerate(tables):
+               df_table = pd.read_html(str(tab))[0]
 
-           st.write(f"Table{i+1}")
-           st.dataframe(df_table)
+               st.write(f"Table{i+1}")
+               st.dataframe(df_table)
 
-           @st.cache_resource
-           def convert_df(df):
-               return df.to_csv().encode('utf-8')
+               @st.cache_resource
+               def convert_df(df):
+                   return df.to_csv().encode('utf-8')
 
-           csv = convert_df(df_table)
-           st.download_button("Download as csv", data=csv,file_name=f"table{i+1}.csv")
+               csv = convert_df(df_table)
+               st.download_button("Download as csv", data=csv,file_name=f"table{i+1}.csv")
+       else:
+           st.write("No tables with tag 'table' in the web page")
+
    else:
        st.write("No url for scraping tables")
