@@ -1,17 +1,18 @@
 # Streamlit app file
+# Importing libraries
 import streamlit as st
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-
+# Sidebar
 with st.sidebar:
     st.title("ScrapeIt")
     st.header("Table Crawler")
     st.write("A simple table crawler built with Python")
-    url = st.text_input("Please enter the URL to scrape the tables", key='url_path')
+    url = st.text_input("Please enter the URL to scrape the tables")
     connection = False
-    
+
     try:
         if st.button("Click", type='primary'):
             html = requests.get(url=str(url))
@@ -23,22 +24,24 @@ with st.sidebar:
     except Exception:
         st.write("Please enter a url")
 
-df = pd.DataFrame({"SNo":[1,2,3], "Name":['a','b','c'], "phone":[1,2,3]})
-st.dataframe(df)
+# Main Container
+with st.container():
+   st.markdown("#### Scraped Tables from the URL")
+   if connection:
+       soup = BeautifulSoup(data, 'lxml')
+       tables = soup.find_all('table')
 
-@st.cache_resource
-def convert_df(df):
-    return df.to_csv().encode('utf-8')
-csv = convert_df(df)
+       for i,tab in enumerate(tables):
+           df_table = pd.read_html(str(tab))[0]
 
-st.download_button("Download as csv", data=csv,file_name="data.csv")
+           st.write(f"Table{i+1}")
+           st.dataframe(df_table)
 
-st.subheader("The Scraped tables from URL")
+           @st.cache_resource
+           def convert_df(df):
+               return df.to_csv().encode('utf-8')
 
-if connection:
-    st.write("You can scrape data")
-    soup = BeautifulSoup(data)
-    tables = soup.find('table')
-    df_table = pd.read_html(str(tables))[0]
-    st.dataframe(df_table) 
-
+           csv = convert_df(df_table)
+           st.download_button("Download as csv", data=csv,file_name=f"table{i+1}.csv")
+   else:
+       st.write("No url for scraping tables")
