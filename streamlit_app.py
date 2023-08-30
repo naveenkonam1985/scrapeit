@@ -8,22 +8,27 @@ from bs4 import BeautifulSoup
 
 connection = False
 
-# Sidebar
+# Sidebar config
 with st.sidebar:
     st.title("ScrapeIt")
     st.header("Table Crawler")
     st.write("A simple table crawler built with Python")
+    
+    # Input for URL
     url = st.text_input("Please enter the URL to scrape the tables")
 
     try:
+        # Clicked status for click me button
         if 'clicked' not in st.session_state:
             st.session_state.clicked = False
 
+        # Function for enabling clicked 
         def click_button():
             st.session_state.clicked = True
 
+        
+        # Button for click me
         st.button('Click me', on_click=click_button,type='primary')
-        #if st.button("Click", type='primary'):
         if st.session_state.clicked:
             html = requests.get(url=str(url))
             if html.status_code in [200]:
@@ -37,14 +42,18 @@ with st.sidebar:
     st.write("Note: This app searches for table tag in the html page, so it returns the table only if concern tags exists.")
 
 
-# Main Container
+# Main Container config
 with st.container():
     st.markdown("#### Scraped Tables from the URL")
+    # Defining tables dictionary
     table_dict = {}
+    
+    # Getting the soup object
     if connection:
         soup = BeautifulSoup(data, 'lxml')
         tables = soup.find_all('table')
-
+        
+        # If found any tables, add them to table_dict
         if tables:
             for i,tab in enumerate(tables):
                 table_dict[f'Table{i+1}'] = pd.read_html(str(tab))[0]
@@ -52,21 +61,13 @@ with st.container():
                 st.write(f"Table{i+1}")
                 st.dataframe(table_dict[f'Table{i+1}'])
 
-            #@st.cache_resource
-            #def convert_df(df):
-            #    return df.to_csv(index=False)
-
-            #csv = convert_df()
-            #st.download_button("Download as csv", data=csv,file_name=f"table{i+1}.csv")
-            #st.button("Download", on_click=convert_df, key=f'table{i+1}')
-
         else:
             st.write("No tables with tag 'table' in the web page")
 
     else:
         st.write("No url for scraping tables")
 
-
+    # Itertaing through table_dict to select the table and download the data
     try:
         if table_dict:
             
@@ -74,29 +75,40 @@ with st.container():
             if 'selected' not in st.session_state:
                 st.session_state.selected = False
             
+            # Function for enabling selected value
             def selected_box():
                 st.session_state.selected = True
 
+            # List of values for select box
             options_list = ['None']
             options_list.extend(list(table_dict.keys()))
+            selected_value = st.selectbox('Select Table to Download', options=options_list, on_change=selected_box)
             
-            selected_value = st.selectbox('Tables', options=options_list, on_change=selected_box)
-            
+            # Writing selected value
             if st.session_state.selected:
                 st.write(f"Selected option is {selected_value}")
+
             
-            # Button for download
+            # Download Button for download
             if 'loaded' not in st.session_state:
                 st.session_state.loaded = False
 
+            # Function for enabling loaded
             def loaded_button():
                 st.session_state.loaded = True
 
-            st.button('Download', on_click=loaded_button, type='primary')
-
-            if st.session_state.loaded:
-                table_dict[selected_value].to_csv(f'{selected_value}.csv')
-                st.write(f"{selected_value} Downloaded")
+            # Function for download csv data with cache
+            @st.cache_resource
+            def convert_df(df):
+                return df.to_csv(index=False).encode('utf-8')
+            
+            # Download based on the selected value
+            if selected_value != 'None':
+                csv = convert_df(table_dict[selected_value])
+                download = st.download_button('Download', data=csv, file_name=f"{selected_value}.csv",on_click=loaded_button, type='primary')
+                
+                if download:
+                    st.write(f"{selected_value} Downloaded")
 
     except Exception:
-        st.write("Not able to get tables")
+        st.write("Not able to extract tables")
