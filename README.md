@@ -1,10 +1,9 @@
 # ScrapeIt
 ## Table Crawler
-Simple web application built with Streamlit for scraping tables with BeautifulSoup library.
-
+Simple web application built with Streamlit and BeautifulSoup for scraping tables.
 
 ## Usage
-You can download the project and run the site with <code>streamlit run streamlit_app.py</code> \
+You can download the project and run the site with <code>streamlit run streamlit_app.py</code>  
 or you can visit <code>https://tablecrawler.streamlit.app/</code>
 
 ## Purpose
