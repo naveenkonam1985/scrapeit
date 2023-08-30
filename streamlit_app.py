@@ -35,6 +35,8 @@ with st.sidebar:
                 st.write("The connection successful")
                 connection = True
                 data = html.text
+            else:
+                st.write("Seems the entered url is not valid")
 
     except Exception:
         st.write("Please enter a url")
@@ -56,7 +58,7 @@ with st.container():
         # If found any tables, add them to table_dict
         if tables:
             for i,tab in enumerate(tables):
-                table_dict[f'Table{i+1}'] = pd.read_html(str(tab))[0]
+                table_dict[f'Table{i+1}'] = pd.read_html(str(tab),header=0)[0]
 
                 st.write(f"Table{i+1}")
                 st.dataframe(table_dict[f'Table{i+1}'])
