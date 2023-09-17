@@ -27,13 +27,17 @@ with st.sidebar:
     # Function for enabling clicked 
     def click_button():
         st.session_state.clicked = True
+
+    # Function for enabling clicked 
+    def clear_button():
+        url = ""
     
     with col1:
         # Button for click me
         st.button('Click me', on_click=click_button,type='primary', use_container_width=True)
                   
     with col2:
-        st.button('Clear',type='secondary',use_container_width=True)
+        st.button('Clear',on_click=clear_button, type='secondary',use_container_width=True)
 
     try:
         if st.session_state.clicked:
