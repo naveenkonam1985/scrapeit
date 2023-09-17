@@ -38,13 +38,15 @@ with st.sidebar:
                 connection = True
                 data = html.text
             else:
-                st.write(html.status_code)
+                st.write(f"Status Code: {html.status_code}")
                 st.write("Seems the entered url is not valid")
 
     except Exception:
         st.write("Please enter a url")
 
     st.write("Note: This app searches for table tag in the html page, so it returns the table only if concern tags exists.")
+    
+    st.button('Clear',type='secondary')
 
 
 # Main Container config
