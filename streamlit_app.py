@@ -38,6 +38,7 @@ with st.sidebar:
                 connection = True
                 data = html.text
             else:
+                st.write(html.status_code)
                 st.write("Seems the entered url is not valid")
 
     except Exception:
