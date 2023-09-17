@@ -17,7 +17,8 @@ with st.sidebar:
     st.write("A simple table crawler built with Python")
     
     # Input for URL
-    url = st.text_input("Please enter the URL to scrape the tables")
+    
+    url = st.text_input("Please enter the URL to scrape the tables", key="text")
     col1, col2 = st.columns([1,1])
     
     # Clicked status for click me button
@@ -31,6 +32,7 @@ with st.sidebar:
     # Function for enabling clicked 
     def clear_button():
         st.session_state.clicked = False
+        st.session_state.text = ""
     
     with col1:
         # Button for click me
