@@ -19,38 +19,37 @@ with st.sidebar:
     # Input for URL
     url = st.text_input("Please enter the URL to scrape the tables")
     col1, col2 = st.columns([1,1])
+    
+    # Clicked status for click me button
+    if 'clicked' not in st.session_state:
+        st.session_state.clicked = False
+
+    # Function for enabling clicked 
+    def click_button():
+        st.session_state.clicked = True
+    
     with col1:
-        try:
-            # Clicked status for click me button
-                if 'clicked' not in st.session_state:
-                    st.session_state.clicked = False
-
-                # Function for enabling clicked 
-                def click_button():
-                    st.session_state.clicked = True
-
-                # Button for click me
-                st.button('Click me', on_click=click_button,type='primary')
-                if st.session_state.clicked:
-                    html = requests.get(url=str(url))
-                    if html.status_code in [200]:
-                        st.write("The connection successful")
-                        connection = True
-                        data = html.text
-                    else:
-                        st.write(f"Status Code: {html.status_code}")
-                        st.write("Seems the entered url is not valid")
+        # Button for click me
+        st.button('Click me', on_click=click_button,type='primary')
                   
-        except Exception:
-            st.write("Please enter a url") 
-               
     with col2:
         st.button('Clear',type='secondary')
 
+    try:
+        if st.session_state.clicked:
+            html = requests.get(url=str(url))
+            if html.status_code in [200]:
+                st.write("The connection successful")
+                connection = True
+                data = html.text
+            else:
+                st.write(f"Status Code: {html.status_code}")
+                st.write("Seems the entered url is not valid")
+    except Exception:
+            st.write("Please enter a url") 
+
     st.write("Note: This app searches for table tag in the html page, so it returns the table only if concern tags exists.")
     
-    
-
 
 # Main Container config
 with st.container():
