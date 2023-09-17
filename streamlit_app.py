@@ -30,10 +30,10 @@ with st.sidebar:
     
     with col1:
         # Button for click me
-        st.button('Click me', on_click=click_button,type='primary')
+        st.button('Click me', on_click=click_button,type='primary', use_container_width=True)
                   
     with col2:
-        st.button('Clear',type='secondary')
+        st.button('Clear',type='secondary',use_container_width=True)
 
     try:
         if st.session_state.clicked:
