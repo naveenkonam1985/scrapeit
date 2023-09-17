@@ -30,7 +30,7 @@ with st.sidebar:
 
     # Function for enabling clicked 
     def clear_button():
-        url = ""
+        st.session_state.clicked = False
     
     with col1:
         # Button for click me
