@@ -73,7 +73,7 @@ with st.container():
                 table_dict[f'Table{i+1}'] = pd.read_html(str(tab),header=0)[0]
 
                 st.write(f"Table{i+1}")
-                st.dataframe(table_dict[f'Table{i+1}'], use_container_width=True)
+                st.dataframe(table_dict[f'Table{i+1}'], use_container_width=True, hide_index=True)
 
         else:
             st.write("No tables with tag 'table' in the web page")
