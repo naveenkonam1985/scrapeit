@@ -1,5 +1,4 @@
-# ScrapeIt
-## Table Crawler
+# Table Crawler
 Simple web application built with Streamlit and BeautifulSoup for scraping tables.
 
 ## Usage
