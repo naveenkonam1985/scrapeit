@@ -12,8 +12,7 @@ connection = False
 
 # Sidebar config
 with st.sidebar:
-    st.title("ScrapeIt")
-    st.header("Table Crawler")
+    st.title("Table Crawler")
     st.write("A simple table crawler built with Python")
     
     # Input for URL
